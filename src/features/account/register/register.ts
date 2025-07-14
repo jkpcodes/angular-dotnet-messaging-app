@@ -1,7 +1,7 @@
 import { Component, DestroyRef, inject, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RegisterCreds, User } from '../../../types/user';
-import { AccountService } from '../../../core/account-service';
+import { AccountService } from '../../../core/services/account-service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
