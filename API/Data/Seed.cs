@@ -41,6 +41,7 @@ public class Seed
                     Description = member.Description,
                     City = member.City,
                     Country = member.Country,
+                    ImageUrl = member.ImageUrl,
                 }
             };
 
