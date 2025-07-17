@@ -13,8 +13,8 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
       if (error) {
         switch (error.status) {
           case 400:
-            // toastService.error(error.error);
             if (error.error.errors) {
+              // Validation type errors
               const modelStateErrors = [];
               for (const key in error.error.errors) {
                 if (error.error.errors[key]) {

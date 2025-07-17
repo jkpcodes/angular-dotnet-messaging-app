@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { RegisterCreds, User } from '../../types/user';
-import { tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -9,11 +10,10 @@ import { tap } from 'rxjs';
 export class AccountService {
   private http = inject(HttpClient);
   currentUser = signal<User | null>(null);
+  private baseUrl = `${environment.apiUrl}/account`;
 
-  baseUrl = 'https://localhost:5001/api/account/';
-
-  register(creds: RegisterCreds) {
-    return this.http.post<User>(this.baseUrl + 'register', creds).pipe(
+  register(creds: RegisterCreds): Observable<User> {
+    return this.http.post<User>(this.baseUrl + '/register', creds).pipe(
       tap((userData) => {
         if (userData) {
           this.setCurrentUser(userData);
@@ -22,8 +22,8 @@ export class AccountService {
     );
   }
 
-  login(creds: any) {
-    return this.http.post<User>(this.baseUrl + 'login', creds).pipe(
+  login(creds: any): Observable<User> {
+    return this.http.post<User>(this.baseUrl + '/login', creds).pipe(
       tap((userData) => {
         if (userData) {
           this.setCurrentUser(userData);
@@ -32,12 +32,12 @@ export class AccountService {
     );
   }
 
-  setCurrentUser(user: User) {
+  setCurrentUser(user: User): void {
     localStorage.setItem('user', JSON.stringify(user));
     this.currentUser.set(user);
   }
 
-  logout() {
+  logout(): void {
     localStorage.removeItem('user');
     this.currentUser.set(null);
   }

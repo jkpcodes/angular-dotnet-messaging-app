@@ -1,1 +1,43 @@
-<p>member-detail works!</p>
+@if (member(); as member) {
+<div class="flex p-6 box-border flex-grow">
+  <div class="card bg-base-100 flex flex-col flex-grow min-w-80 max-w-100 mr-6">
+    <img
+      src="{{ member.imageUrl || '/user.png' }}"
+      alt="{{ member.displayName }} image"
+      class="rounded-full mx-10 mt-3 object-cover"
+    />
+    <div class="card-body flex flex-col justify-between">
+      <div class="flex flex-col items-center">
+        <div class="flex text-2xl text-primary font-semibold">
+          {{ member.displayName }}, {{ member.dateOfBirth | age }}
+        </div>
+        <div class="flex text-sm text-gray-500">
+          {{ member.city }}, {{ member.country }}
+        </div>
+
+        <div class="divider"></div>
+
+        <ul class="menu rounded-box w-full text-base-content p-0 text-2xl">
+          <li><a routerLink="profile" routerLinkActive="text-primary">Profile</a></li>
+          <li><a routerLink="photos" routerLinkActive="text-primary">Photos</a></li>
+          <li><a routerLink="messages" routerLinkActive="text-primary">Messages</a></li>
+        </ul>
+      </div>
+      <div class="flex cards-action justify-between gap-2 px-2 mb-3">
+        <button class="btn btn-info flex-1" (click)="goBack()">
+          Go back
+        </button>
+        <button class="btn btn-primary flex-1">
+          Add friend
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card bg-base-100 p-6 flex flex-grow">
+    <h3 class="card-title text-3xl text-primary">{{ title() }}</h3>
+    <div class="divider"></div>
+    <router-outlet />
+  </div>
+</div>
+}

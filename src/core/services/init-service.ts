@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { AccountService } from './account-service';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +8,7 @@ import { of } from 'rxjs';
 export class InitService {
   private accountService = inject(AccountService);
 
-  init() {
+  init(): Observable<null> {
     const user = localStorage.getItem('user');
     if (user) {
       this.accountService.currentUser.set(JSON.parse(user));

@@ -9,7 +9,7 @@ export class ToastService {
     this.createToastContainer();
   }
 
-  private createToastContainer() {
+  private createToastContainer(): void {
     if (!document.getElementById('toast-container')) {
       const toastContainer = document.createElement('div');
       toastContainer.id = 'toast-container';
@@ -18,7 +18,7 @@ export class ToastService {
     }
   }
 
-  private createToastElement(message: string, alertClass: string, duration: number = 5000) {
+  private createToastElement(message: string, alertClass: string, duration: number = 5000): void {
     // Check if toast container exists
     const toastContainer = document.getElementById('toast-container');
     if (!toastContainer) return;
@@ -47,19 +47,19 @@ export class ToastService {
     }, duration);
   }
 
-  success(message: string, duration?: number) {
+  success(message: string, duration?: number): void {
     this.createToastElement(message, 'alert-success', duration);
   }
 
-  error(message: string, duration?: number) {
+  error(message: string, duration?: number): void {
     this.createToastElement(message, 'alert-error', duration);
   }
 
-  warning(message: string, duration?: number) {
+  warning(message: string, duration?: number): void {
     this.createToastElement(message, 'alert-warning', duration);
   }
 
-  info(message: string, duration?: number) {
+  info(message: string, duration?: number): void {
     this.createToastElement(message, 'alert-info', duration);
   }
 }
