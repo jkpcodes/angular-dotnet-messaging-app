@@ -1,6 +1,5 @@
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
 import { filter } from 'rxjs';
-import { Member } from '../../../types/member';
 import {
   ActivatedRoute,
   NavigationEnd,
@@ -12,6 +11,8 @@ import {
 import { Location } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AgePipe } from '../../../core/pipes/age-pipe';
+import { AccountService } from '../../../core/services/account-service';
+import { MemberService } from '../../../core/services/member-service';
 
 @Component({
   selector: 'app-member-detail',
@@ -23,19 +24,15 @@ export class MemberDetail {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private location = inject(Location);
+  private accountService = inject(AccountService);
+  protected memberService = inject(MemberService);
   private destroyRef = inject(DestroyRef);
   protected title = signal<string | undefined>('Profile');
-
-  protected member = signal<Member | undefined>(undefined);
+  protected isLoggedInUser = computed(() => {
+    return this.memberService.member()?.id === this.accountService.currentUser()?.id;
+  });
 
   ngOnInit() {
-    // Retrieve the member data from the memberResolver setup in app.routes.ts
-    this.route.data
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((data) => {
-        this.member.set(data['member']);
-      });
-
     this.title.set(this.route.firstChild?.snapshot.title);
 
     this.router.events
