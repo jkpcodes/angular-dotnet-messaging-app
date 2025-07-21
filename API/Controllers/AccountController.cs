@@ -26,7 +26,15 @@ namespace API.Controllers
                 Email = registerDto.Email,
                 DisplayName = registerDto.DisplayName,
                 PasswordHash = hmace.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
-                PasswordSalt = hmace.Key
+                PasswordSalt = hmace.Key,
+                Member = new Member
+                {
+                    DisplayName = registerDto.DisplayName,
+                    Gender = registerDto.Gender,
+                    City = registerDto.City,
+                    Country = registerDto.Country,
+                    DateOfBirth = registerDto.DateOfBirth
+                }
             };
 
             context.Users.Add(user);
