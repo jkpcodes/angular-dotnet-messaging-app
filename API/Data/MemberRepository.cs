@@ -16,8 +16,8 @@ public class MemberRepository(AppDbContext context) : IMemberRepository
     public async Task<Member?> GetMemberforUpdate(string id)
     {
         return await context.Members
-            .AsNoTracking()
             .Include(x => x.User)
+            .Include(x => x.Photos)
             .SingleOrDefaultAsync(x => x.Id == id);
     }
 
