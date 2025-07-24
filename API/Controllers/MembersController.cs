@@ -4,6 +4,7 @@ using API.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using API.Extensions;
+using API.Helpers;
 
 namespace API.Controllers
 {
@@ -12,9 +13,11 @@ namespace API.Controllers
     {
         [Authorize]
         [HttpGet]
-        public async Task<IReadOnlyList<Member>> GetMembers()
+        public async Task<ActionResult<PaginatedResult<Member>>> GetMembers([FromQuery]MemberParams memberParams)
         {
-            return await memberRepository.GetMembersAsync();
+            memberParams.CurrentMemberId = User.GetMemberId();
+
+            return await memberRepository.GetMembersAsync(memberParams);
         }
 
         [Authorize]
