@@ -31,11 +31,6 @@ export class MemberList implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.memberService.getMembers(this.memberParams)
-    //   .pipe(takeUntilDestroyed(this.destroyRef))
-    //   .subscribe(result => {
-    //     this.paginatedMembers.set(result);
-    //   });
     this.loadMembers();
   }
 

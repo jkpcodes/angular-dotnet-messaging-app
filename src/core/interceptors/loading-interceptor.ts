@@ -14,7 +14,19 @@ export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
     return paramString ? `${url}?${paramString}` : url;
   }
 
+  const invalidateCache = (urlPattern: string) => {
+    for (const key of cache.keys()) {
+      if (key.includes(urlPattern)) {
+        cache.delete(key);
+      }
+    }
+  };
+
   const cacheKey = generateCacheKey(req.url, req.params);
+
+  if (req.method.includes('POST') && req.url.includes('/friendrequest')) {
+    invalidateCache('/friendrequest');
+  }
 
   if (req.method === 'GET') {
     const cachedResponse = cache.get(cacheKey);
@@ -34,3 +46,8 @@ export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
     finalize(() => busyService.idle())
   );
 };
+
+export const emptyCache = () => {
+  // Empty cache map
+  cache.clear();
+}

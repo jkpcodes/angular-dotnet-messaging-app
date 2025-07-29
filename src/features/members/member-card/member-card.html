@@ -1,15 +1,115 @@
 @if (member(); as member) {
 <div
   routerLink="/members/{{ member.id }}"
-  class="card cursor-pointer transition-all duration-300 ease-in-out transform hover:-translate-y-2"
+  class="card cursor-pointer transition-all duration-300 ease-in-out transform hover:-translate-y-2 relative"
 >
   <img
     src="{{ member.imageUrl || '/user.png' }}"
     alt="{{ member.displayName }} image"
     class="rounded-lg"
   />
+  @if (!sentFriendRequest() && !receivedFriendRequest()) {
+    @if (!isFriend()) {
+      <button
+        (click)="sendFriendRequest($event)"
+        class="absolute top-1 right-1 z-40 btn btn-ghost btn-circle tooltip tooltip-info"
+        data-tip="Add Friend"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          [attr.fill]="'white'"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="size-7"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z"
+          />
+        </svg>
+      </button>
+    } @else {
+      <button
+        class="absolute top-1 right-1 z-40 btn btn-ghost btn-circle tooltip tooltip-info"
+        data-tip="Message User"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          [attr.fill]="'white'"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="size-7"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 0 1 .778-.332 48.294 48.294 0 0 0 5.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
+        </svg>
+      </button>
+    }
+  } @else {
+    <div class="absolute top-1 right-1 z-40 flex gap-1">
+      @if (receivedFriendRequest()) {
+        <button
+          (click)="rejectFriendRequest($event)"
+          class="btn btn-ghost btn-circle tooltip tooltip-error"
+          data-tip="Reject Friend Request"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="red"
+            class="size-7"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </button>
+        <button
+          (click)="acceptFriendRequest($event)"
+          class="btn btn-ghost btn-circle tooltip tooltip-success"
+          data-tip="Accept Friend Request"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="green"
+            class="size-7"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </button>
+      } @else {
+        <button
+          (click)="cancelFriendRequest($event)"
+          class="btn btn-ghost btn-circle tooltip tooltip-error"
+          data-tip="Cancel Friend Request"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="red"
+            class="size-7"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </button>
+      }
+    </div>
+  }
   <div
-    class="card-actions z-50 absolute bottom-0 w-full px-3 py-1 rounded-b-lg bg-gradient-to-t from-black via-black/75 to-black/0"
+    class="card-actions absolute bottom-0 w-full px-3 py-1 rounded-b-lg bg-gradient-to-t from-black via-black/75 to-black/0"
   >
     <div class="flex flex-col gap-1 text-white">
       <span class="font-semibold">{{ member.displayName }}</span>
