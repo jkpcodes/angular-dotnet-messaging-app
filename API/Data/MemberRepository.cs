@@ -22,6 +22,17 @@ public class MemberRepository(AppDbContext context) : IMemberRepository
             .SingleOrDefaultAsync(x => x.Id == id);
     }
 
+    public async Task<PaginatedResult<Member>> GetMemberFriends(FriendRequestParams friendRequestParams)
+    {
+        var query = context.MemberFriends
+            .Where(mf => mf.MemberId == friendRequestParams.MemberId)
+            .Include(mf => mf.Friend)
+            .Select(mf => mf.Friend);
+
+        return await PaginationHelper.CreateAsync(query, friendRequestParams.PageNumber,
+            friendRequestParams.PageSize);
+    }
+
     public async Task<PaginatedResult<Member>> GetMembersAsync(MemberParams memberParams)
     {
         var query = context.Members.AsQueryable()

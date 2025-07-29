@@ -20,4 +20,13 @@ public class Member
     public AppUser User { get; set; } = null!;
     [JsonIgnore]
     public List<Photo> Photos { get; set; } = [];
+
+    [JsonIgnore]
+    public List<MemberFriend> Friends { get; set; } = [];
+    [JsonIgnore]
+    public List<MemberFriend> FriendsOf { get; set; } = [];
+    [JsonIgnore]
+    public List<FriendRequest> SentFriendRequests { get; set; } = [];
+    [JsonIgnore]
+    public List<FriendRequest> ReceivedFriendRequests { get; set; } = [];
 }
