@@ -28,6 +28,10 @@ export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
     invalidateCache('/friendrequest');
   }
 
+  if ((req.method.includes('POST') || req.method.includes('DELETE')) && req.url.includes('/messages')) {
+    invalidateCache('/messages');
+  }
+
   if (req.method === 'GET') {
     const cachedResponse = cache.get(cacheKey);
 

@@ -14,9 +14,8 @@ export class InitService {
     const user = localStorage.getItem('user');
     if (user) {
       this.accountService.currentUser.set(JSON.parse(user));
+      this.friendService.getFriendRequestIds();
     }
-
-    this.friendService.getFriendRequestIds();
 
     return of(null);
   }

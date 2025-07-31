@@ -1,6 +1,6 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { Member } from '../../../types/member';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FriendsService } from '../../../core/services/friends-service';
 
 @Component({
@@ -11,6 +11,7 @@ import { FriendsService } from '../../../core/services/friends-service';
 })
 export class MemberCard {
   protected friendService = inject(FriendsService);
+  private router = inject(Router);
   isFriend = input<boolean>(false);
   member = input.required<Member>();
   sentFriendRequest = computed(() =>
@@ -42,5 +43,11 @@ export class MemberCard {
     event.stopPropagation();
 
     this.friendService.rejectFriendRequest(this.member().id).subscribe();
+  }
+
+  goToFriendMessages(event: Event) {
+    event.stopPropagation();
+
+    this.router.navigateByUrl(`/members/${this.member().id}/messages`);
   }
 }
