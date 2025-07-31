@@ -15,18 +15,29 @@ public class Member
     public string? Description { get; set; }
     public required string City { get; set; }
     public required string Country { get; set; }
+
     [JsonIgnore]
     [ForeignKey(nameof(Id))]
     public AppUser User { get; set; } = null!;
+
     [JsonIgnore]
     public List<Photo> Photos { get; set; } = [];
 
     [JsonIgnore]
     public List<MemberFriend> Friends { get; set; } = [];
+
     [JsonIgnore]
     public List<MemberFriend> FriendsOf { get; set; } = [];
+
     [JsonIgnore]
     public List<FriendRequest> SentFriendRequests { get; set; } = [];
+
     [JsonIgnore]
     public List<FriendRequest> ReceivedFriendRequests { get; set; } = [];
+
+    [JsonIgnore]
+    public List<Message> MessagesSent { get; set; } = [];
+
+    [JsonIgnore]
+    public List<Message> MessagesReceived { get; set; } = [];
 }

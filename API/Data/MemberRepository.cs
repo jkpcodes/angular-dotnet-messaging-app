@@ -10,7 +10,6 @@ public class MemberRepository(AppDbContext context) : IMemberRepository
     public async Task<Member?> GetMemberByIdAsync(string id)
     {
         return await context.Members
-            .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
