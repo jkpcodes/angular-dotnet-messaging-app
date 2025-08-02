@@ -12,6 +12,7 @@ import { InitService } from '../core/services/init-service';
 import { errorInterceptor } from '../core/interceptors/error-interceptor';
 import { jwtInterceptor } from '../core/interceptors/jwt-interceptor';
 import { loadingInterceptor } from '../core/interceptors/loading-interceptor';
+import { lastValueFrom } from 'rxjs';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,7 +24,7 @@ export const appConfig: ApplicationConfig = {
     provideAppInitializer(async () => {
       const initService = inject(InitService);
       try {
-        await initService.init();
+        await lastValueFrom(initService.init());
       } finally {
         const splashScreen = document.getElementById('splash-screen');
         if (splashScreen) {

@@ -68,5 +68,11 @@
         </tr>
       }
     </tbody>
+    
   </table>
+  @if (paginatedMessages()?.items?.length == 0) {
+    <div class="w-full flex items-center justify-center h-[73px] bg-base-100 rounded-b-lg">
+      No messages to display.
+    </div>
+  }
 </div>
