@@ -13,6 +13,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AgePipe } from '../../../core/pipes/age-pipe';
 import { AccountService } from '../../../core/services/account-service';
 import { MemberService } from '../../../core/services/member-service';
+import { PresenceService } from '../../../core/services/presence-service';
 
 @Component({
   selector: 'app-member-detail',
@@ -25,6 +26,7 @@ export class MemberDetail {
   private router = inject(Router);
   private location = inject(Location);
   private accountService = inject(AccountService);
+  protected presenceService = inject(PresenceService);
   protected memberService = inject(MemberService);
   private destroyRef = inject(DestroyRef);
   protected title = signal<string | undefined>('Profile');

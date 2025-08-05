@@ -2,6 +2,7 @@ import { Component, computed, inject, input } from '@angular/core';
 import { Member } from '../../../types/member';
 import { Router, RouterLink } from '@angular/router';
 import { FriendsService } from '../../../core/services/friends-service';
+import { PresenceService } from '../../../core/services/presence-service';
 
 @Component({
   selector: 'app-member-card',
@@ -12,6 +13,7 @@ import { FriendsService } from '../../../core/services/friends-service';
 export class MemberCard {
   protected friendService = inject(FriendsService);
   private router = inject(Router);
+  private presenceService = inject(PresenceService);
   isFriend = input<boolean>(false);
   member = input.required<Member>();
   sentFriendRequest = computed(() =>
@@ -19,6 +21,9 @@ export class MemberCard {
   );
   receivedFriendRequest = computed(() =>
     this.friendService.receivedFriendRequestIds().includes(this.member().id)
+  );
+  protected isOnline = computed(() =>
+    this.presenceService.onlineUsers().includes(this.member().id)
   );
 
   sendFriendRequest(event: Event) {
