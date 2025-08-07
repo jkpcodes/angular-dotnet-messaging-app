@@ -81,6 +81,7 @@ export class AccountService {
     user.roles = this.getRolesFromToken(user);
     this.currentUser.set(user);
     this.friendService.getFriendRequestIds();
+    this.friendService.getFriendIds();
 
     if (this.refreshTokenTimer == null) {
       this.startTokenRefreshInterval();
@@ -92,17 +93,25 @@ export class AccountService {
   }
 
   logout(): void {
-    localStorage.removeItem('filters');
-    this.currentUser.set(null);
+    this.http
+      .post(`${this.baseUrl}/logout`, {}, { withCredentials: true })
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          localStorage.removeItem('filters');
+          this.currentUser.set(null);
+      
+          if (this.refreshTokenTimer) {
+            clearInterval(this.refreshTokenTimer);
+            this.refreshTokenTimer = null;
+          }
+      
+          this.friendService.clearRequestIds();
+          this.presenceService.stopHubConnection();
+          emptyCache();
+        }
+      });
 
-    if (this.refreshTokenTimer) {
-      clearInterval(this.refreshTokenTimer);
-      this.refreshTokenTimer = null;
-    }
-
-    this.friendService.clearRequestIds();
-    this.presenceService.stopHubConnection();
-    emptyCache();
   }
 
   private getRolesFromToken(user: User): string[] {

@@ -14,6 +14,7 @@ import { AgePipe } from '../../../core/pipes/age-pipe';
 import { AccountService } from '../../../core/services/account-service';
 import { MemberService } from '../../../core/services/member-service';
 import { PresenceService } from '../../../core/services/presence-service';
+import { FriendsService } from '../../../core/services/friends-service';
 
 @Component({
   selector: 'app-member-detail',
@@ -26,12 +27,17 @@ export class MemberDetail {
   private router = inject(Router);
   private location = inject(Location);
   private accountService = inject(AccountService);
+  private friendService = inject(FriendsService);
   protected presenceService = inject(PresenceService);
   protected memberService = inject(MemberService);
   private destroyRef = inject(DestroyRef);
   protected title = signal<string | undefined>('Profile');
   protected isLoggedInUser = computed(() => {
     return this.memberService.member()?.id === this.accountService.currentUser()?.id;
+  });
+  protected isFriend = computed(() => {
+    if (this.memberService.member() == null) return false;
+    return this.friendService.friendIds().includes(this.memberService.member()?.id as string);
   });
 
   ngOnInit() {

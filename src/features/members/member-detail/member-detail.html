@@ -30,9 +30,11 @@
         <button class="btn btn-info flex-1" (click)="goBack()">
           Go back
         </button>
-        <button class="btn btn-primary flex-1">
-          Add friend
-        </button>
+        @if (!isFriend() && !isLoggedInUser()) {
+          <button class="btn btn-primary flex-1">
+            Add friend
+          </button>
+        }
       </div>
     </div>
   </div>

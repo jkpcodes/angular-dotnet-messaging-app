@@ -12,6 +12,7 @@ import { PaginatedResult } from '../../types/pagination';
 export class FriendsService {
   private http = inject(HttpClient);
   private baseUrl = `${environment.apiUrl}/friendrequest`;
+  friendIds = signal<string[]>([]);
   sentFriendRequestIds = signal<string[]>([]);
   receivedFriendRequestIds = signal<string[]>([]);
 
@@ -36,6 +37,18 @@ export class FriendsService {
       .pipe(take(1));
   }
 
+  getFriendIds() {
+    return this.http
+      .get<string[]>(`${this.baseUrl}/friend-list-ids`)
+      .pipe(
+        take(1),
+        tap((response) => {
+          this.friendIds.set(response);
+        })
+      )
+      .subscribe();
+  }
+
   getFriendRequestIds() {
     return this.http
       .get<FriendRequestIds>(`${this.baseUrl}/list-ids`)
@@ -56,10 +69,7 @@ export class FriendsService {
     params = params.append('pageSize', pageNumber);
 
     return this.http.get<PaginatedResult<Member>>(`${this.baseUrl}/friend-list`).pipe(
-      take(1),
-      tap((response: PaginatedResult<Member>) => {
-        console.log(response);
-      })
+      take(1)
     );
   }
 

@@ -107,7 +107,17 @@
         placeholder="Password"
         required
       />
-      <button class="btn" type="submit">Login</button>
+      <button
+        class="btn btn-primary"
+        type="submit"
+        [disabled]="loading()"
+      >
+        @if (loading()) {
+          <span class="mr-2 loading loading-spinner"></span>
+        } @else {
+          Login
+        }
+      </button>
     </form>
     }
   </div>

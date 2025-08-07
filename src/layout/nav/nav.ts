@@ -29,6 +29,7 @@ export class Nav implements OnInit {
     localStorage.getItem('theme') || 'light'
   );
   protected themes = themes;
+  protected loading = signal(false);
 
   ngOnInit(): void {
     document.documentElement.setAttribute('data-theme', this.selectedTheme());
@@ -42,6 +43,7 @@ export class Nav implements OnInit {
   }
 
   login() {
+    this.loading.set(true);
     this.accountService
       .login(this.creds)
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -58,6 +60,9 @@ export class Nav implements OnInit {
           console.log(err);
           this.toastService.error(err.error);
         },
+        complete: () => {
+          this.loading.set(false);
+        }
       });
   }
 

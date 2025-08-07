@@ -6,6 +6,7 @@ import { PaginatedResult } from '../../../types/pagination';
 import { Paginator } from '../../../shared/paginator/paginator';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FilterModal } from '../filter-modal/filter-modal';
+import { FriendsService } from '../../../core/services/friends-service';
 
 @Component({
   selector: 'app-member-list',
@@ -17,6 +18,7 @@ export class MemberList implements OnInit {
   @ViewChild('filterModal') modal?: FilterModal;
   private memberService = inject(MemberService);
   private destroyRef = inject(DestroyRef);
+  protected friendService = inject(FriendsService);
   protected paginatedMembers = signal<PaginatedResult<Member> | null>(null);
   protected memberParams = new MemberParams();
   private updatedParams = new MemberParams();
