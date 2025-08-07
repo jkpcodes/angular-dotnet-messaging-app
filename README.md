@@ -1,1 +1,0 @@
-A real-time messaging app implemented using latest .NET and Angular.

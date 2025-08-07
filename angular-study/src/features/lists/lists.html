@@ -1,0 +1,70 @@
+@if (currentPaginatedResult(); as paginatedResult) {
+  <div class="flex justify-between items-center">
+    <div class="tabs tabs-box tabs-lg text-primary w-fit mt-2 mx-6">
+      @for (tab of tabs; track $index) {
+        <button
+          class="tab"
+          [class.tab-active]="selectedTab() === tab.value"
+          (click)="selectTab(tab.value)"
+        >
+          {{ tab.label }}
+        </button>
+      }
+    </div>
+  
+    @if (paginatedResult.metadata; as metadata) {
+      <app-paginator
+        [hidden]="metadata.totalCount === 0"
+        [pageNumber]="metadata.currentPage"
+        [pageSize]="metadata.pageSize"
+        [totalCount]="metadata.totalCount"
+        [totalPages]="metadata.totalPages"
+        (pageChange)="onPageChange($event)"
+      />
+    }
+  </div>
+
+  <div class="flex flex-col px-6">
+    @switch (selectedTab()) {
+      @case ('friends') {
+        @if (friends().length) {
+          <div
+            class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 h-full w-full box-border py-6"
+          >
+            @for (member of friends(); track member.id) {
+              <app-member-card [isFriend]="true" [member]="member"></app-member-card>
+            }
+          </div>
+        } @else {
+          <div class="mt-3 text-lg">You currently have no friends.</div>
+        }
+      }
+      @case ('pending') {
+        @if (friendRequests().length) {
+          <div
+            class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 h-full w-full box-border py-6"
+          >
+            @for (member of friendRequests(); track member.id) {
+              <app-member-card [member]="member"></app-member-card>
+            }
+          </div>
+        } @else {
+          <div class="mt-3 text-lg">You currently have no pending friend request/s.</div>
+        }
+      }
+      @case ('sent') {
+        @if (sentInvites().length) {
+          <div
+            class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 h-full w-full box-border py-6"
+          >
+            @for (member of sentInvites(); track member.id) {
+              <app-member-card [member]="member"></app-member-card>
+            }
+          </div>
+        } @else {
+          <div class="mt-3 text-lg">You currently have no sent friend request/s.</div>
+        }
+      }
+    }
+  </div>
+}
