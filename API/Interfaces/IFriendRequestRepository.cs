@@ -11,5 +11,4 @@ public interface IFriendRequestRepository
     void AcceptFriendRequest(FriendRequest friendRequest);
     void DeleteFriendRequest(FriendRequest friendRequest);
     void AddFriendRequest(FriendRequest friendRequest);
-    Task<bool> SaveAllChanges();
 }

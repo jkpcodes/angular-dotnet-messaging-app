@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using API.Entities;
 using API.Helpers;
 using API.Interfaces;
@@ -19,6 +20,14 @@ public class MemberRepository(AppDbContext context) : IMemberRepository
             .Include(x => x.User)
             .Include(x => x.Photos)
             .SingleOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<List<string>> GetMemberFriendIds(string memberId)
+    {
+        return await context.MemberFriends
+            .Where(mf => mf.MemberId == memberId)
+            .Select(mf => mf.FriendId)
+            .ToListAsync();
     }
 
     public async Task<PaginatedResult<Member>> GetMemberFriends(FriendRequestParams friendRequestParams)

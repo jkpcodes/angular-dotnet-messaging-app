@@ -9,5 +9,4 @@ public interface IFriendRepository
     Task<IReadOnlyList<string>> GetCurrentMemberFriendIds(string memberId);
     void DeleteFriend(MemberFriend friend);
     void AddFriend(MemberFriend friend);
-    Task<bool> SaveAllChanges();
 }

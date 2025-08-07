@@ -10,6 +10,7 @@ using API.Helpers;
 using API.Entities;
 using Microsoft.AspNetCore.Identity;
 using API.SignalR;
+using System.Numerics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,11 +26,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
 builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<IMemberRepository, MemberRepository>();
 builder.Services.AddScoped<IPhotoService, PhotoService>();
-builder.Services.AddScoped<IFriendRequestRepository, FriendRequestRepository>();
-builder.Services.AddScoped<IFriendRepository, FriendRepository>();
-builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+// builder.Services.AddScoped<IMemberRepository, MemberRepository>();
+// builder.Services.AddScoped<IFriendRequestRepository, FriendRequestRepository>();
+// builder.Services.AddScoped<IFriendRepository, FriendRepository>();
+// builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<LogUserActivity>();
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 builder.Services.AddSignalR();
