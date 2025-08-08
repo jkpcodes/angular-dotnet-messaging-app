@@ -1,4 +1,4 @@
-import { Component, DestroyRef, effect, ElementRef, inject, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, effect, ElementRef, inject, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
 import { MessageService } from '../../../core/services/message-service';
 import { MemberService } from '../../../core/services/member-service';
 import { Message } from '../../../types/message';
@@ -21,6 +21,7 @@ export class MemberMessages implements OnInit, OnDestroy {
   private memberService = inject(MemberService);
   private route = inject(ActivatedRoute);
   private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
   protected presenceService = inject(PresenceService);
   protected messageContent = '';
 
@@ -58,6 +59,7 @@ export class MemberMessages implements OnInit, OnDestroy {
     this.messageService.sendMessage(recipientId, this.messageContent)
       ?.then(() => {
         this.messageContent = '';
+        this.cdr.detectChanges();
       });
   }
 

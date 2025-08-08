@@ -66,7 +66,7 @@ public class AppDbContext(DbContextOptions options) : IdentityDbContext<AppUser>
       .HasOne(fr => fr.Receiver)
       .WithMany(m => m.ReceivedFriendRequests)
       .HasForeignKey(fr => fr.ReceiverId)
-      .OnDelete(DeleteBehavior.Cascade);
+      .OnDelete(DeleteBehavior.NoAction);
 
     var dateTimeConverter = new ValueConverter<DateTime, DateTime>(
       v => v.ToUniversalTime(),

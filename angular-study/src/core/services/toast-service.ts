@@ -40,7 +40,7 @@ export class ToastService {
     }
 
     toast.innerHTML = `
-      ${avatar ? `<img src=${avatar || '/user.png'} class='w-10' h-10 rounded'` : ''};
+      ${avatar ? `<img src=${avatar || '/user.png'} class='w-10' h-10 rounded' />` : ''}
       <span>${message}</span>
       <button class="ml-4 btn btn-sm btn-ghost">X</button>
     `;
