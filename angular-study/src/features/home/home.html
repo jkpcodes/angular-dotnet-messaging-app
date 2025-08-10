@@ -13,12 +13,14 @@
         />
       </svg>
       <h1 class="text-5xl font-bold">Find a friend to message</h1>
-      <p class="py-6">Sign up to start messaging a friend</p>
+      <p class="py-6">{{!accountService.currentUser() ? 'Sign up to start messaging a friend' : 'Add friends to start messaging'}}</p>
       <div class="flex items-center gap-3">
-        <button (click)="showRegisterMode(true)" class="btn btn-primary btn-lg">
-          Register
-        </button>
-        <button class="btn btn-info btn-lg">Learn More</button>
+        @if (!accountService.currentUser()) {
+          <button (click)="showRegisterMode(true)" class="btn btn-primary btn-lg">
+            Register
+          </button>
+          <button class="btn btn-info btn-lg">Learn More</button>
+        }
       </div>
     </div>
   </div>
