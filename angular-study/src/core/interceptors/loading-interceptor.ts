@@ -3,7 +3,13 @@ import { BusyService } from '../services/busy-service';
 import { inject } from '@angular/core';
 import { finalize, of, tap } from 'rxjs';
 
-const cache = new Map<string, HttpEvent<unknown>>();
+type CacheEntry = {
+  response: HttpEvent<unknown>;
+  timestamp: number;
+}
+
+const cache = new Map<string, CacheEntry>();
+const CACHE_DURATION_MS = 300000; // Set to 5 minutes
 
 export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
   const busyService = inject(BusyService);
@@ -36,7 +42,13 @@ export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
     const cachedResponse = cache.get(cacheKey);
 
     if (cachedResponse) {
-      return of(cachedResponse);
+      const isExpired = (Date.now() - cachedResponse.timestamp) > CACHE_DURATION_MS;
+
+      if (!isExpired) {
+        return of(cachedResponse.response);
+      } else {
+        cache.delete(cacheKey);
+      }
     }
   }
 
@@ -44,7 +56,10 @@ export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     tap(response => {
-      cache.set(cacheKey, response);
+      cache.set(cacheKey, {
+        response,
+        timestamp: Date.now()
+      });
     }),
     finalize(() => busyService.idle())
   );

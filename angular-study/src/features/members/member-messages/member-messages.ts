@@ -1,7 +1,6 @@
-import { ChangeDetectorRef, Component, DestroyRef, effect, ElementRef, inject, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, effect, ElementRef, inject, model, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MessageService } from '../../../core/services/message-service';
 import { MemberService } from '../../../core/services/member-service';
-import { Message } from '../../../types/message';
 import { TimeAgoPipe } from '../../../core/pipes/time-ago-pipe';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -23,7 +22,7 @@ export class MemberMessages implements OnInit, OnDestroy {
   private destroyRef = inject(DestroyRef);
   private cdr = inject(ChangeDetectorRef);
   protected presenceService = inject(PresenceService);
-  protected messageContent = '';
+  protected messageContent = model('');
 
   constructor() {
     effect(() => {
@@ -54,11 +53,11 @@ export class MemberMessages implements OnInit, OnDestroy {
   sendMessage() {
     const recipientId = this.memberService.member()?.id;
 
-    if (!recipientId || !this.messageContent) return;
+    if (!recipientId || !this.messageContent()) return;
 
-    this.messageService.sendMessage(recipientId, this.messageContent)
+    this.messageService.sendMessage(recipientId, this.messageContent())
       ?.then(() => {
-        this.messageContent = '';
+        this.messageContent.set('');
         this.cdr.detectChanges();
       });
   }
