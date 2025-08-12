@@ -125,6 +125,6 @@ public class AccountControllerTests
         var response = Assert.IsType<ActionResult<UserDto>>(result);
         var userDto = Assert.IsType<UserDto>(response.Value);
         Assert.Equal("test@test.com", userDto.Email);
-        Assert.Equal("toke", userDto.Token);
+        Assert.Equal("token", userDto.Token);
     }
 }
