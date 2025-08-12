@@ -61,7 +61,7 @@ namespace API.Controllers
 
             var result = await userManager.CheckPasswordAsync(user, loginDto.Password);
 
-            if (!result) return Unauthorized("Invalid email or password.");
+            if (!result) return Unauthorized("Invalid email or password");
 
             await SetRefreshTokenCookie(user);
 
